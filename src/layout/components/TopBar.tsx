@@ -1,6 +1,7 @@
 import { FunctionComponent, ReactNode } from 'react';
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { LoginButton } from '@/components/common/buttons/login-button';
+import { NavBarButtons } from '@/components/common/nav-bar-buttons';
 
 
 interface Props {
@@ -41,7 +42,7 @@ const TopBar: FunctionComponent<Props> = ({ endNode, startNode, title = '', ...r
         </Typography>
 
         {endNode}
-        <LoginButton/>
+      <NavBarButtons />
       </Toolbar>
      
     </AppBar>
