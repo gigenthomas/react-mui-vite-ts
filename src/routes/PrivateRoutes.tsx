@@ -6,6 +6,7 @@ import AboutView from '@/views/About';
 import DevView from '@/views/Dev';
 import WelcomeView from '@/views/Welcome';
 import NotImplementedView from '@/views/NotImplementedView';
+import ProfileView from '@/views/Profile/ProfileView';
 
 const PRIVATE_ROUTES = [
   {
@@ -29,7 +30,7 @@ const PRIVATE_ROUTES = [
       },
       {
         path: '/me',
-        element: <NotImplementedView />,
+        element: <ProfileView />,
       },
     ],
   },

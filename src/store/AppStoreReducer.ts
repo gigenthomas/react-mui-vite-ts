@@ -22,6 +22,7 @@ const AppStoreReducer: React.Reducer<AppStoreState, AppStoreAction> = (state, ac
       };
     case 'SIGN_UP':
     case 'LOG_IN':
+      console.log('LOG_IN');
       return {
         ...state,
         isAuthenticated: true,

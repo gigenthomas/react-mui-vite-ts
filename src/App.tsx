@@ -16,7 +16,7 @@ const MainApp = () => {
     domain="dev-h6xscatzzzdp72q5.us.auth0.com"
     clientId="lFh07Y3eocoYdcv9VBVx5IVB2bJOnJHn"
     authorizationParams={{
-      redirect_uri: "http://localhost:3000/profile"
+      redirect_uri: window.location.origin
     }}
   >
     <ErrorBoundary name="App">
