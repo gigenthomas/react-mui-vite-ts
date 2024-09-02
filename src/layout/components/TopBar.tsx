@@ -1,5 +1,7 @@
 import { FunctionComponent, ReactNode } from 'react';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
+import { LoginButton } from '@/components/common/buttons/login-button';
+
 
 interface Props {
   endNode?: ReactNode;
@@ -22,6 +24,7 @@ const TopBar: FunctionComponent<Props> = ({ endNode, startNode, title = '', ...r
       }
       {...restOfProps}
     >
+         
       <Toolbar disableGutters sx={{ paddingX: 1 }}>
         {startNode}
 
@@ -38,7 +41,9 @@ const TopBar: FunctionComponent<Props> = ({ endNode, startNode, title = '', ...r
         </Typography>
 
         {endNode}
+        <LoginButton/>
       </Toolbar>
+     
     </AppBar>
   );
 };
