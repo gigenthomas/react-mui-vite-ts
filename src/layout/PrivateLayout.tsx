@@ -25,6 +25,11 @@ const SIDE_BAR_ITEMS: Array<LinkToPage> = [
     icon: 'error',
   },
   {
+    title: 'Protected',
+    path: '/protected',
+    icon: 'info',
+  },
+  {
     title: 'About',
     path: '/about',
     icon: 'info',

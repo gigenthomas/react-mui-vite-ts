@@ -3,6 +3,7 @@ import StoreProvider from '@/store';
 import { ErrorBoundary } from '@/components';
 import Routes from '@/routes';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { REACT_APP_AUTH0_CLIENT_ID, REACT_APP_AUTH0_DOMAIN } from './config';
 
 /**
  * Root Application Component
@@ -13,8 +14,8 @@ const MainApp = () => {
    
 
 <Auth0Provider
-    domain="dev-h6xscatzzzdp72q5.us.auth0.com"
-    clientId="lFh07Y3eocoYdcv9VBVx5IVB2bJOnJHn"
+    domain={REACT_APP_AUTH0_DOMAIN}
+    clientId={REACT_APP_AUTH0_CLIENT_ID}
     authorizationParams={{
       redirect_uri: window.location.origin
     }}

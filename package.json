@@ -26,6 +26,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "axios": "^1.7.7",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest"

@@ -5,8 +5,8 @@ import { NotFoundView } from '@/views';
 import AboutView from '@/views/About';
 import DevView from '@/views/Dev';
 import WelcomeView from '@/views/Welcome';
-import NotImplementedView from '@/views/NotImplementedView';
 import ProfileView from '@/views/Profile/ProfileView';
+import ProtectedView from '@/views/ProtectedView/protected-view';
 
 const PRIVATE_ROUTES = [
   {
@@ -32,6 +32,11 @@ const PRIVATE_ROUTES = [
         path: '/me',
         element: <ProfileView />,
       },
+      {
+        path: '/protected',
+        element: <ProtectedView />,
+      },
+      
     ],
   },
 ];

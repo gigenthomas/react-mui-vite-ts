@@ -6,6 +6,7 @@ import { useEventLogout, useEventSwitchDarkMode, useIsAuthenticated, useIsMobile
 import { AppIconButton, UserInfo } from '@/components';
 import { SIDE_BAR_WIDTH, TOP_BAR_DESKTOP_HEIGHT } from '../config';
 import SideBarNavList from './SideBarNavList';
+import { User } from '@/store/types';
 
 export interface SideBarProps extends Pick<DrawerProps, 'anchor' | 'className' | 'open' | 'variant' | 'onClose'> {
   items: Array<LinkToPage>;
@@ -21,7 +22,7 @@ export interface SideBarProps extends Pick<DrawerProps, 'anchor' | 'className' |
  * @param {function} onClose - called when the Drawer is closing
  */
 const SideBar: FunctionComponent<SideBarProps> = ({ anchor, open, variant, items, onClose, ...restOfProps }) => {
-  const [state] = useAppStore();
+  const [state  ] = useAppStore();
   // const isAuthenticated = state.isAuthenticated; // Variant 1
   const isAuthenticated = useIsAuthenticated(); // Variant 2
   const onMobile = useIsMobile();
@@ -62,7 +63,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ anchor, open, variant, items
       >
         {isAuthenticated && (
           <>
-            <UserInfo showAvatar />
+            <UserInfo showAvatar user={state.currentUser as User} />
             <Divider />
           </>
         )}

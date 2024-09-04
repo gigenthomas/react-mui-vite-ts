@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store';
 import { IS_FAKE_LOGIN } from '@/config';
 import { sessionStorageDelete } from '@/utils/sessionStorage';
+import { LOG_OUT } from '@/store/AppStoreReducer';
 
 type CurrentUser = {
   id?: string;
@@ -47,7 +48,7 @@ export function useEventLogout() {
     // TODO: AUTH: add auth and tokens cleanup here
     sessionStorageDelete('access_token');
 
-    dispatch({ type: 'LOG_OUT' });
+    dispatch({ type: LOG_OUT });
     navigate('/', { replace: true }); // Redirect to home page by reloading the App
   }, [dispatch, navigate]);
 }
