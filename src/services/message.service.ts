@@ -23,6 +23,9 @@ export const getPublicResource = async (): Promise<ApiResponse> => {
   };
 };
 
+
+
+
 export const getProtectedResource = async (
   accessToken: string
 ): Promise<ApiResponse> => {
@@ -36,6 +39,7 @@ export const getProtectedResource = async (
   };
 
   const { data, error } = (await callExternalApi({ config })) as ApiResponse;
+  
 
   return {
     data,
