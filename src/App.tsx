@@ -5,6 +5,7 @@ import Routes from '@/routes';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { REACT_APP_AUTH0_CLIENT_ID, REACT_APP_AUTH0_DOMAIN } from './config';
 
+
 /**
  * Root Application Component
  * @component MainApp

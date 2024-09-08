@@ -26,6 +26,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@syncfusion/ej2-react-schedule": "^26.2.12",
     "axios": "^1.7.7",
     "react": "latest",
     "react-dom": "latest",
