@@ -1,8 +1,10 @@
 import { AxiosRequestConfig } from "axios";
 
 import { ApiResponse } from "@/models/api-response";
+import { callGetUserEventsAPI } from "./external-api.service";
 import { callExternalApi } from "./external-api.service";
 import { REACT_APP_API_SERVER_URL } from "@/config";
+import { UserEvents } from "@/models/user-events";
 
 REACT_APP_API_SERVER_URL;
 
@@ -40,6 +42,29 @@ export const getProtectedResource = async (
   return {
     data,
     error,
+  };
+};
+
+
+
+export const getUserEvents = async (
+  accessToken: string,
+  userID: string | undefined
+): Promise<UserEvents> => {
+  const config: AxiosRequestConfig = {
+    url: `${REACT_APP_API_SERVER_URL}/api/user/events/`+userID,
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const { userEvents, userEventError } = (await callGetUserEventsAPI({ config })) as UserEvents;
+
+  return {
+    userEvents,
+    userEventError,
   };
 };
 
