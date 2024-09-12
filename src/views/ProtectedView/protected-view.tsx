@@ -1,9 +1,8 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
 import { ActionEventArgs } from '@syncfusion/ej2-schedule';
 import { REACT_APP_AUTH0_AUDIENCE } from '@/config';
 import { getUserEvents } from '@/services/message.service';
+import { deleteEvent } from '@/services/message.service';
 import { useAuth0 } from '@auth0/auth0-react'
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
@@ -13,23 +12,20 @@ function ProtectedView() {
   const {user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [message, setMessage] = useState<string>("");
   const [events, setEvents] = useState<object[]>([]);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [eventDeleted, setEventDeleted] = useState(false);
 
 
-  const onActionBegin = (args: ActionEventArgs) => {
-    if (args.requestType === 'eventRemove') {
-      // Add your custom logic here
-      console.log('Event is being deleted:', args.data);
-
-    }
-  };
+  
 
   useEffect(() => {
     let isMounted = true;
 
     const getMessage = async () => {
       const options = { authorizationParams: { audience: REACT_APP_AUTH0_AUDIENCE } }; 
-      const accessToken = await getAccessTokenSilently(options);
-      const { userEvents, userEventError } = await getUserEvents(accessToken, user?.sub);
+      const token = await getAccessTokenSilently(options);
+      setAccessToken(token);
+      const { userEvents, userEventError } = await getUserEvents(token, user?.sub);
 
       if (!isMounted) {
         return;
@@ -40,7 +36,7 @@ function ProtectedView() {
           userEvents[i].startFormatted = new Date(userEvents[i].start);  
           userEvents[i].endFormatted = new Date(userEvents[i].end);
         }
-        setEvents(userEvents); // Set the fetched user events to the state
+        setEvents(userEvents); 
       }
 
       if (userEventError) {
@@ -53,7 +49,28 @@ function ProtectedView() {
     return () => {
       isMounted = false;
     };
-  }, [getAccessTokenSilently]);
+  }, [getAccessTokenSilently, eventDeleted]);
+
+
+  const onActionBegin = async (args: ActionEventArgs) => {
+    if (args.requestType === 'eventRemove') {
+      if (args.data && Array.isArray(args.data) && args.data[0]) {
+        try {
+          // Wait for the deleteEvent Promise to resolve
+          const result = await deleteEvent(accessToken, args.data[0].EventId);
+          console.log('Event was successfully deleted:', result);
+          
+          // Update eventDeleted state to trigger a re-render
+          setEventDeleted(!eventDeleted); // Toggle the eventDeleted state
+  
+        } catch (error) {
+          console.error('Failed to delete event:', error);
+        }
+      } else {
+        console.error('No event data available for deletion.');
+      }
+    }
+  };
 
   // Date Objects follow this format: (year, monthIndex, day, hours, minutes, seconds, milliseconds)
 const fieldsData = {

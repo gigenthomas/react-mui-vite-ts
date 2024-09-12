@@ -48,7 +48,7 @@ export const getProtectedResource = async (
 
 
 export const getUserEvents = async (
-  accessToken: string,
+  accessToken: string | null,
   userID: string | undefined
 ): Promise<UserEvents> => {
   const config: AxiosRequestConfig = {
@@ -68,8 +68,30 @@ export const getUserEvents = async (
   };
 };
 
+
+export const deleteEvent = async (
+  accessToken: string | null,
+  eventID: string | undefined
+): Promise<ApiResponse> => {
+  const config: AxiosRequestConfig = {
+    url: `${REACT_APP_API_SERVER_URL}/api/user/events/`+eventID,
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };  
+
+  const { data, error } = (await callExternalApi({ config })) as ApiResponse;
+
+  return {
+    data,
+    error,
+  };
+};
+
 export const getAdminResource = async (
-  accessToken: string
+  accessToken: string | null
 ): Promise<ApiResponse> => {
   const config: AxiosRequestConfig = {
     url: `${REACT_APP_API_SERVER_URL}/api/messages/admin`,
