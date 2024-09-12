@@ -27,6 +27,7 @@
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
     "@syncfusion/ej2-react-schedule": "^26.2.12",
+    "@syncfusion/ej2-schedule": "^26.2.14",
     "axios": "^1.7.7",
     "react": "latest",
     "react-dom": "latest",
