@@ -13,6 +13,7 @@ import '../../App.css';
 function ProtectedView() {
   const {user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [message, setMessage] = useState<string>("");
+  const [events, setEvents] = useState<object[]>([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -20,7 +21,6 @@ function ProtectedView() {
     const getMessage = async () => {
       const options = { authorizationParams: { audience: REACT_APP_AUTH0_AUDIENCE } }; 
       const accessToken = await getAccessTokenSilently(options);
-      console.log(accessToken);
       const { data, error } = await getProtectedResource(accessToken);
       const { userEvents, userEventError } = await getUserEvents(accessToken, user?.sub);
 
@@ -32,7 +32,15 @@ function ProtectedView() {
         setMessage(JSON.stringify(data, null, 2));
       }
 
-     console.log("user Events are ", userEvents);
+      if (userEvents) {
+        for (let i = 0; i < userEvents.length; i++) {
+          userEvents[i].startFormatted = new Date(userEvents[i].start);  
+          userEvents[i].endFormatted = new Date(userEvents[i].end);
+        }
+        setEvents(userEvents); // Set the fetched user events to the state
+      }
+
+
 
       if (error) {
         setMessage(JSON.stringify(error, null, 2));
@@ -47,25 +55,15 @@ function ProtectedView() {
   }, [getAccessTokenSilently]);
 
   // Date Objects follow this format: (year, monthIndex, day, hours, minutes, seconds, milliseconds)
-  const eventData: object[] = [
-    {
-      Id: 2,
-      Subject: 'Meeting',
-      StartTime: new Date(2024, 8, 9, 10, 0), // September 9, 2024, 10:00 AM
-      EndTime: new Date(2024, 8, 9, 12, 30), // September 9, 2024, 12:30 PM
-      IsAllDay: false,
-      Status: 'Completed',
-      Priority: 'High'
-    },
-  ];
-  const fieldsData = {
+const fieldsData = {
     id: 'Id',
-    subject: { name: 'Subject' },
+    subject: { name: 'title' },
     isAllDay: { name: 'IsAllDay' },
-    startTime: { name: 'StartTime' },
-    endTime: { name: 'EndTime' }
-  }
-  const eventSettings = { dataSource: eventData, fields: fieldsData }
+    startTime: { name: 'startFormatted' },
+    endTime: { name: 'endFormatted' }
+}
+const eventSettings = { dataSource: events, fields: fieldsData }
+
 
   const currentDate = new Date(); //Get current Date
 
@@ -79,10 +77,9 @@ function ProtectedView() {
             <TextField id="email" label="Email" value={message} variant="outlined" fullWidth />
           </Grid>
 
-          <ScheduleComponent height='550px' selectedDate={currentDate} eventSettings={eventSettings} >
-            <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
+          <ScheduleComponent height='550px' selectedDate={new Date(2024, 8, 12)} eventSettings={eventSettings}>
+              <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
           </ScheduleComponent>
-          
         </Grid>
       </Grid>
       }

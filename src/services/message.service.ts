@@ -58,7 +58,7 @@ export const getUserEvents = async (
       "content-type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
-  };
+  };  
 
   const { userEvents, userEventError } = (await callGetUserEventsAPI({ config })) as UserEvents;
 
