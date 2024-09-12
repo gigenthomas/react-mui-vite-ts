@@ -7,11 +7,12 @@ import { useAuth0 } from '@auth0/auth0-react'
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import '../../App.css';
+import { UserEvent } from '@/models/user-event';
 
 function ProtectedView() {
   const {user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [message, setMessage] = useState<string>("");
-  const [events, setEvents] = useState<object[]>([]);
+  const [events, setEvents] = useState<UserEvent[]>([]);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [eventDeleted, setEventDeleted] = useState(false);
 
@@ -56,12 +57,17 @@ function ProtectedView() {
     if (args.requestType === 'eventRemove') {
       if (args.data && Array.isArray(args.data) && args.data[0]) {
         try {
-          // Wait for the deleteEvent Promise to resolve
-          const result = await deleteEvent(accessToken, args.data[0].EventId);
+          const eventIdToDelete = args.data[0].EventId;
+          const result = await deleteEvent(accessToken, eventIdToDelete);
+
           console.log('Event was successfully deleted:', result);
+          // Assuming `events` is an array of `Event` objects
+          const updatedEvents = events.filter(event => event.EventId !== eventIdToDelete);
           
-          // Update eventDeleted state to trigger a re-render
-          setEventDeleted(!eventDeleted); // Toggle the eventDeleted state
+          setEvents(updatedEvents);
+
+          // Update any other state related to the deletion
+          setEventDeleted(!eventDeleted);
   
         } catch (error) {
           console.error('Failed to delete event:', error);
