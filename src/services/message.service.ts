@@ -5,6 +5,7 @@ import { callGetUserEventsAPI } from "./external-api.service";
 import { callExternalApi } from "./external-api.service";
 import { REACT_APP_API_SERVER_URL } from "@/config";
 import { UserEvents } from "@/models/user-events";
+import { UserEvent } from "@/models/user-event";
 
 REACT_APP_API_SERVER_URL;
 
@@ -68,6 +69,28 @@ export const getUserEvents = async (
   };
 };
 
+export const updateUserEvents = async (
+  accessToken: string | null,
+  event: UserEvent | undefined
+): Promise<ApiResponse> => {
+  const config: AxiosRequestConfig = {
+    url: `${REACT_APP_API_SERVER_URL}/api/user/events`,
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    data: JSON.stringify(event)
+  };  
+
+  const { data, error } = (await callExternalApi({ config })) as ApiResponse;
+
+  return {
+    data,
+    error,
+  };
+};
+
 
 export const deleteEvent = async (
   accessToken: string | null,
@@ -89,6 +112,10 @@ export const deleteEvent = async (
     error,
   };
 };
+
+
+
+
 
 export const getAdminResource = async (
   accessToken: string | null

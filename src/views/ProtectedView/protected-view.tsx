@@ -3,6 +3,7 @@ import { ActionEventArgs } from '@syncfusion/ej2-schedule';
 import { REACT_APP_AUTH0_AUDIENCE } from '@/config';
 import { getUserEvents } from '@/services/message.service';
 import { deleteEvent } from '@/services/message.service';
+import { updateUserEvents } from '@/services/message.service';
 import { useAuth0 } from '@auth0/auth0-react'
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
@@ -76,6 +77,26 @@ function ProtectedView() {
         console.error('No event data available for deletion.');
       }
     }
+
+    if (args.requestType === 'eventCreate') {
+      const newEventData = args.data instanceof Array ? args.data[0] : args.data;
+      console.log('New Event Data:', newEventData);
+      // Safely check and format start and end times
+    if (newEventData && newEventData.endFormatted) {
+      newEventData.start = newEventData.endFormatted.toISOString();
+    }
+
+    if (newEventData && newEventData.endFormatted) {
+      newEventData.end = newEventData.endFormatted.toISOString();
+    }
+    if (newEventData){
+      newEventData.creator_email = user?.email;
+    }
+    const typedNewEventData = newEventData as UserEvent;
+    setEvents((prevEvents) => [...prevEvents, typedNewEventData]);
+    updateUserEvents(accessToken, typedNewEventData);
+    
+    }
   };
 
   // Date Objects follow this format: (year, monthIndex, day, hours, minutes, seconds, milliseconds)
@@ -86,10 +107,9 @@ const fieldsData = {
     startTime: { name: 'startFormatted' },
     endTime: { name: 'endFormatted' }
 }
+
+console.log("HERE ARE THE EVENTS:", events);
 const eventSettings = { dataSource: events, fields: fieldsData }
-
-
-
 
   return (
     <main style={{ padding: '1rem 0' }}>
