@@ -3,7 +3,8 @@ import { ActionEventArgs } from '@syncfusion/ej2-schedule';
 import { REACT_APP_AUTH0_AUDIENCE } from '@/config';
 import { getUserEvents } from '@/services/message.service';
 import { deleteEvent } from '@/services/message.service';
-import { updateUserEvents } from '@/services/message.service';
+import { createUserEvent } from '@/services/message.service';
+import { updateUserEvent } from '@/services/message.service';
 import { useAuth0 } from '@auth0/auth0-react'
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
@@ -92,10 +93,44 @@ function ProtectedView() {
     if (newEventData){
       newEventData.creator_email = user?.email;
     }
-    const typedNewEventData = newEventData as UserEvent;
+    let typedNewEventData = newEventData as UserEvent;
+    const eventID = await createUserEvent(accessToken, typedNewEventData);
+    typedNewEventData.EventId = eventID;
     setEvents((prevEvents) => [...prevEvents, typedNewEventData]);
-    updateUserEvents(accessToken, typedNewEventData);
+
     
+    }
+
+    if (args.requestType === 'eventChange') {
+      const updatedEventData = args.data instanceof Array ? args.data[0] : args.data;
+  
+      // Safely check and format start and end times
+      if (updatedEventData && updatedEventData.startFormatted) {
+        updatedEventData.start = new Date(updatedEventData.startFormatted).toISOString();
+      }
+  
+      if (updatedEventData && updatedEventData.endFormatted) {
+        updatedEventData.end = new Date(updatedEventData.endFormatted).toISOString();
+      }
+  
+      if (updatedEventData) {
+        // Cast updatedEventData to UserEvent type
+        const typedUpdatedEventData = updatedEventData as UserEvent;
+  
+        // Update the event in the local state
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.EventId === typedUpdatedEventData.EventId ? typedUpdatedEventData : event
+          )
+        );
+        
+        
+        
+        // Send the updated event data to the server
+        await updateUserEvent(accessToken, typedUpdatedEventData, updatedEventData.EventId);
+      } else {
+        console.error('Updated event data is undefined');
+      }
     }
   };
 

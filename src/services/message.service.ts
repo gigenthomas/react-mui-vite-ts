@@ -69,10 +69,10 @@ export const getUserEvents = async (
   };
 };
 
-export const updateUserEvents = async (
+export const createUserEvent = async (
   accessToken: string | null,
   event: UserEvent | undefined
-): Promise<ApiResponse> => {
+): Promise<string> => {
   const config: AxiosRequestConfig = {
     url: `${REACT_APP_API_SERVER_URL}/api/user/events`,
     method: "POST",
@@ -80,8 +80,35 @@ export const updateUserEvents = async (
       "content-type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
+    data: JSON.stringify(event),
+  };
+
+  const { data, error } = await callExternalApi({ config });
+
+  if (error) {
+    throw new Error(`Error creating user event: ${error}`);
+  }
+
+  return typeof data === "string" ? data : JSON.stringify(data);
+};
+
+
+export const updateUserEvent = async (
+  accessToken: string | null,
+  event: UserEvent | undefined,
+  eventID: string
+): Promise<ApiResponse> => {
+  const config: AxiosRequestConfig = {
+    url: `${REACT_APP_API_SERVER_URL}/api/user/events/`+eventID,
+    method: "PUT",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
     data: JSON.stringify(event)
-  };  
+  };
+  
+  event;
 
   const { data, error } = (await callExternalApi({ config })) as ApiResponse;
 
@@ -112,6 +139,8 @@ export const deleteEvent = async (
     error,
   };
 };
+
+
 
 
 
