@@ -2,7 +2,6 @@ import { Navigate } from 'react-router-dom';
 import AboutView from '@/views/About';
 import AuthView from '@/views/Auth';
 import { PublicLayout } from '@/layout';
-import { IS_DEBUG } from '@/config';
 import DevView from '@/views/Dev';
 
 const PUBLIC_ROUTES = [
@@ -28,12 +27,4 @@ const PUBLIC_ROUTES = [
     ],
   },
 ];
-
-// Add debug routes
-IS_DEBUG &&
-  PUBLIC_ROUTES[0].children.push({
-    path: '/dev',
-    element: <DevView />,
-  });
-
 export default PUBLIC_ROUTES;

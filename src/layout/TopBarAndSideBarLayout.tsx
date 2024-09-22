@@ -1,11 +1,10 @@
 import { FunctionComponent, useMemo, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Stack, StackProps } from '@mui/material';
-import { IS_DEBUG } from '@/config';
 import { AppIconButton, ErrorBoundary } from '@/components';
 import { useAppStore } from '@/store';
 import { LinkToPage } from '@/utils';
-import { useEventSwitchDarkMode, useIsMobile } from '@/hooks';
+import { useIsMobile } from '@/hooks'; // Removed useEventSwitchDarkMode
 import { TopBar } from './components';
 import SideBar, { SideBarProps } from './components/SideBar';
 import {
@@ -30,7 +29,6 @@ const TopBarAndSideBarLayout: FunctionComponent<Props> = ({ children, sidebarIte
   const [state] = useAppStore();
   const [sidebarVisible, setSidebarVisible] = useState(false); // TODO: Verify is default value is correct
   const onMobile = useIsMobile();
-  const onSwitchDarkMode = useEventSwitchDarkMode();
 
   const sidebarProps = useMemo((): Partial<SideBarProps> => {
     const anchor = onMobile ? SIDE_BAR_MOBILE_ANCHOR : SIDE_BAR_DESKTOP_ANCHOR;
@@ -84,26 +82,12 @@ const TopBarAndSideBarLayout: FunctionComponent<Props> = ({ children, sidebarIte
     />
   );
 
-  const DarkModeButton = (
-    <AppIconButton
-      icon={state.darkMode ? 'day' : 'night'} // Variant 1
-      // icon="daynight" // Variant 2
-      title={state.darkMode ? 'Switch to Light mode' : 'Switch to Dark mode'}
-      onClick={onSwitchDarkMode}
-    />
-  );
+  // Removed DarkModeButton and related logic
 
-  // Note: useMemo() is not needed for startNode, endNode. We need respect store.darkMode and so on.
   const { startNode, endNode } = sidebarProps?.anchor?.includes('left')
-    ? { startNode: LogoButton, endNode: DarkModeButton }
-    : { startNode: DarkModeButton, endNode: LogoButton };
+    ? { startNode: LogoButton, endNode: null }
+    : { startNode: null, endNode: LogoButton };
 
-  IS_DEBUG &&
-    console.log('Render <TopbarAndSidebarLayout/>', {
-      onMobile,
-      darkMode: state.darkMode,
-      sidebarProps,
-    });
 
   return (
     <Stack sx={stackStyles}>

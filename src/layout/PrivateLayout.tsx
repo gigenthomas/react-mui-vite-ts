@@ -1,5 +1,4 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
-import { IS_DEBUG } from '@/config';
 import { LinkToPage } from '@/utils';
 import TopBarAndSideBarLayout from './TopBarAndSideBarLayout';
 
@@ -34,15 +33,13 @@ const SIDE_BAR_ITEMS: Array<LinkToPage> = [
     path: '/about',
     icon: 'info',
   },
+  {
+    title: 'Invite',
+    path: '/invite',
+    icon: 'info',
+  },
 ];
 
-// Add debug links
-IS_DEBUG &&
-  SIDE_BAR_ITEMS.push({
-    title: '[Debug Tools]',
-    path: '/dev',
-    icon: 'settings',
-  });
 
 /**
  * Renders "Private Layout" composition

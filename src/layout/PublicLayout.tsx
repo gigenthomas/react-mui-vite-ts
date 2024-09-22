@@ -1,6 +1,5 @@
 import { FunctionComponent, PropsWithChildren } from 'react';
 import { Stack } from '@mui/material';
-import { IS_DEBUG } from '@/config';
 import { LinkToPage } from '@/utils';
 import { useIsMobile } from '@/hooks';
 import { BottomBar } from './components';
@@ -29,15 +28,9 @@ const SIDE_BAR_ITEMS: Array<LinkToPage> = [
     path: '/about',
     icon: 'info',
   },
+  
 ];
 
-// Add debug links
-IS_DEBUG &&
-  SIDE_BAR_ITEMS.push({
-    title: '[Debug Tools]',
-    path: '/dev',
-    icon: 'settings',
-  });
 
 /**
  * BottomBar navigation items with links for Public Layout

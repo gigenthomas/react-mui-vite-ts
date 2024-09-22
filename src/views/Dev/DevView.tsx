@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, Divider, Grid, Typography } from '@mui/material';
-import { IS_DEBUG } from '@/config';
 import { AppButton, AppIconButton, AppLink, AppView } from '@/components';
 import DialogsSection from './DialogsSection';
 
@@ -9,7 +8,6 @@ import DialogsSection from './DialogsSection';
  * @page Dev
  */
 const DevView = () => {
-  if (!IS_DEBUG) return null; // Hide this page on when env.REACT_APP_DEBUG is not set
 
   return (
     <AppView>

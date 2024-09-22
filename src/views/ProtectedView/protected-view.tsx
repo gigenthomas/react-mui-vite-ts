@@ -96,9 +96,7 @@ function ProtectedView() {
     let typedNewEventData = newEventData as UserEvent;
     const eventID = await createUserEvent(accessToken, typedNewEventData);
     typedNewEventData.EventId = eventID;
-    setEvents((prevEvents) => [...prevEvents, typedNewEventData]);
-
-    
+    setEvents((prevEvents) => [...prevEvents, typedNewEventData]);    
     }
 
     if (args.requestType === 'eventChange') {

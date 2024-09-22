@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { IS_DEBUG } from '@/config';
 import { AppLoading } from '@/components';
 import { useAuthWatchdog, useIsAuthenticated } from '@/hooks';
 import PRIVATE_ROUTES from './PrivateRoutes';
@@ -62,8 +61,6 @@ const Routes = () => {
   if (loading) {
     return <AppLoading />;
   }
-
-  IS_DEBUG && console.log('Render <Routes/>', { isAuthenticated, refresh: refreshCount });
 
   return <RouterProvider router={isAuthenticated ? routesPrivate : routesPublic} />;
 };

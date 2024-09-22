@@ -1,8 +1,8 @@
 import { FunctionComponent, useCallback, MouseEvent } from 'react';
-import { Stack, Divider, Drawer, DrawerProps, FormControlLabel, Switch, Tooltip } from '@mui/material';
+import { Stack, Divider, Drawer, DrawerProps, Tooltip } from '@mui/material';
 import { useAppStore } from '@/store';
 import { LinkToPage } from '@/utils';
-import { useEventLogout, useEventSwitchDarkMode, useIsAuthenticated, useIsMobile } from '@/hooks';
+import { useEventLogout, useIsAuthenticated, useIsMobile } from '@/hooks';
 import { AppIconButton, UserInfo } from '@/components';
 import { SIDE_BAR_WIDTH, TOP_BAR_DESKTOP_HEIGHT } from '../config';
 import SideBarNavList from './SideBarNavList';
@@ -22,12 +22,10 @@ export interface SideBarProps extends Pick<DrawerProps, 'anchor' | 'className' |
  * @param {function} onClose - called when the Drawer is closing
  */
 const SideBar: FunctionComponent<SideBarProps> = ({ anchor, open, variant, items, onClose, ...restOfProps }) => {
-  const [state  ] = useAppStore();
-  // const isAuthenticated = state.isAuthenticated; // Variant 1
-  const isAuthenticated = useIsAuthenticated(); // Variant 2
+  const [state] = useAppStore();
+  const isAuthenticated = useIsAuthenticated();
   const onMobile = useIsMobile();
 
-  const onSwitchDarkMode = useEventSwitchDarkMode();
   const onLogout = useEventLogout();
 
   const handleAfterLinkClick = useCallback(
@@ -81,13 +79,6 @@ const SideBar: FunctionComponent<SideBarProps> = ({ anchor, open, variant, items
             marginTop: 2,
           }}
         >
-          <Tooltip title={state.darkMode ? 'Switch to Light mode' : 'Switch to Dark mode'}>
-            <FormControlLabel
-              label={!state.darkMode ? 'Light mode' : 'Dark mode'}
-              control={<Switch checked={state.darkMode} onChange={onSwitchDarkMode} />}
-            />
-          </Tooltip>
-
           {isAuthenticated && <AppIconButton icon="logout" title="Logout Current User" onClick={onLogout} />}
         </Stack>
       </Stack>
